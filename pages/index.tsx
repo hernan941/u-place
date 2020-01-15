@@ -7,6 +7,9 @@ import { Box, List, ListItem, Stack, Text } from "@chakra-ui/core";
 import { AuthContext } from "../src/client/components/Auth/Context";
 import { User } from "../src/interfaces";
 
+//
+import MyMap from '../src/client/components/Map';
+
 const UsersList: FC = () => {
   const [{ data, loading, error }] = useAxios<User[]>("/api/users");
 
@@ -41,7 +44,10 @@ const Index: NextPage = () => {
     return <p>Loading...</p>;
   }
   if (user) {
-    return <UsersList />;
+    return <>
+      <MyMap />
+      <UsersList />
+    </>
   }
   return <Text>You need to be authenticated!</Text>;
 };
