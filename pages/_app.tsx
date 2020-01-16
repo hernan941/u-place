@@ -2,7 +2,7 @@ import App from "next/app";
 import Router from "next/router";
 import NProgress from "nprogress";
 
-import { theme, ThemeProvider } from "@chakra-ui/core";
+import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
 
 import { Auth } from "../src/client/components/Auth/Context";
 import Navigation from "../src/client/components/Navigation";
@@ -21,6 +21,7 @@ export default class MyApp extends App {
           ...theme,
         }}
       >
+        <CSSReset />
         <Auth>
           <Navigation />
           <Component {...pageProps} />
