@@ -17,6 +17,7 @@ import MyForm from './MyForm';
 
 
 export default function MyMap() {
+    console.log("hola");
     const [count, setCount] = useState(0);
     const [myLL, setMyLL] = useState(0);
     const [todo, setTodo] = useState([[[-39.819588, -73.245209], -1, { name: 'start', category: 'start', description: 'start' }]]);
