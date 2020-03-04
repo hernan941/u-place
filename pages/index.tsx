@@ -10,6 +10,8 @@ import { User } from "../src/interfaces";
 //
 import MyMap from '../src/client/components/Map';
 
+import MyButton from '../src/client/components/MyButton';
+
 const UsersList: FC = () => {
   const [{ data, loading, error }] = useAxios<User[]>("/api/users");
 
@@ -46,10 +48,12 @@ const Index: NextPage = () => {
   if (user) {
     return <div className="map-container">
       <MyMap />
+      <MyButton/>
     </div>
   }
   if (false) return <UsersList />
   return <Text>You need to be authenticated!</Text>;
 };
+
 
 export default Index;
