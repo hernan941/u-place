@@ -39,7 +39,7 @@ const SignUpPage: NextPage = () => {
           signUp({ email, password });
         }}
       >
-        <Stack m={5}>
+        <Stack >
           <Box>
             <Text>Email</Text>
             <Input

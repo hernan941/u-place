@@ -7,6 +7,8 @@ import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { Auth } from "../src/client/components/Auth/Context";
 import Navigation from "../src/client/components/Navigation";
 
+import WindowDimensionsProvider from '../src/client/components/WindowDimensions/context';
+
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
@@ -22,10 +24,12 @@ export default class MyApp extends App {
         }}
       >
         <CSSReset />
-        <Auth>
-          <Navigation />
-          <Component {...pageProps} />
-        </Auth>
+        <WindowDimensionsProvider>
+          <Auth>
+            <Navigation />
+            <Component {...pageProps} />
+          </Auth>
+        </WindowDimensionsProvider>
       </ThemeProvider>
     );
   }

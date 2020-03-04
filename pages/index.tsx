@@ -44,11 +44,11 @@ const Index: NextPage = () => {
     return <p>Loading...</p>;
   }
   if (user) {
-    return <>
+    return <div className="map-container">
       <MyMap />
-      <UsersList />
-    </>
+    </div>
   }
+  if (false) return <UsersList />
   return <Text>You need to be authenticated!</Text>;
 };
 

@@ -14,9 +14,11 @@ import {
 } from "@chakra-ui/core";
 import { useDisclosure } from "@chakra-ui/core";
 import MyForm from './MyForm';
+import { useWindowDimensions } from '../WindowDimensions/context/index';
 
 
 export default function MyMap() {
+    const { width } = useWindowDimensions();
     const [count, setCount] = useState(0);
     const [myLL, setMyLL] = useState(0);
     const [todo, setTodo] = useState([[[-39.819588, -73.245209], -1, { name: 'start', category: 'start', description: 'start' }]]);
@@ -37,8 +39,8 @@ export default function MyMap() {
         onOpen();
     }
     return (
-        <>
-            <Map center={[-39.819588, -73.245209]} zoom={14} width={400} height={500} onClick={(all) => handleClick(all)}>
+        <div>
+            <Map center={[-39.819588, -73.245209]} zoom={14} width={width / 2} height={400} onClick={(all) => handleClick(all)}>
                 {todo.map(pos =>
                     <Marker key={pos[1]} anchor={pos[0]} payload={1} onClick={({ event, anchor, payload }) => { }} />
                 )}
@@ -55,8 +57,8 @@ export default function MyMap() {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <Text fontSize="2xl">Click on the Map</Text>
-        </>
+            <Text fontSize="2xl" textAlign="center">Click on the Map</Text>
+        </div>
     )
 }
 

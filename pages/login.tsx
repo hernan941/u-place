@@ -40,7 +40,7 @@ const LoginPage: NextPage = () => {
           login({ email, password });
         }}
       >
-        <Stack m={5}>
+        <Stack className="form-container">
           <Box>
             <Text>Email</Text>
             <Input
@@ -73,7 +73,7 @@ const LoginPage: NextPage = () => {
               variant="outline"
             >
               Login
-            </Button>
+            </Button> {/*Aqui deberia ir i forgot pasword*/}
           </Box>
         </Stack>
       </form>

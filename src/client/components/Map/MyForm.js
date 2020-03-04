@@ -40,10 +40,9 @@ const MyForm = (props) => {
             <FormControl mt={4} as="fieldset">
                 <FormLabel as="legend">Category</FormLabel>
                 <RadioGroup defaultValue={category} onChange={categoryChange}>
-                    <Radio value="Sasuke">Sasuke</Radio>
-                    <Radio value="Nagato">Nagato</Radio>
-                    <Radio value="Itachi">Itachi</Radio>
-                    <Radio value="Sage of the six Paths">Sage of the six Paths</Radio>
+                    <Radio value="A">A</Radio>
+                    <Radio value="B">B</Radio>
+                    <Radio value="C">C</Radio>
                 </RadioGroup>
                 <FormHelperText id="email-helper-text">
                     Select only if you're a fan.
