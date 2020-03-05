@@ -18,6 +18,7 @@ import { useWindowDimensions } from '../WindowDimensions/context/index';
 
 
 export default function MyMap() {
+    console.log("e");
     const { width } = useWindowDimensions();
     const [count, setCount] = useState(0);
     const [myLL, setMyLL] = useState(0);
@@ -61,4 +62,3 @@ export default function MyMap() {
         </div>
     )
 }
-
