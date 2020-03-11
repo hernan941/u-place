@@ -14,40 +14,12 @@ const Navigation: FC = () => {
   return (
     <nav className="nav-container">
       {user ? (
-        <Stack isInline
-          display="flex"
-          justifyContent="space-between"
-        >
-          <Alert status="success">
-            <AlertIcon />
-            welcome {user.email}
-          </Alert>
-          <div className="menu-container">
-            <Menu>
-              <MenuButton as={Button} >
-                Actions
-             </MenuButton>
-
-              <MenuList>
-                <Link href="/" passHref><MenuItem>Map</MenuItem></Link>
-                <Link href="/notices" passHref><MenuItem>Notices</MenuItem></Link>
-                <Link href="/acount" passHref><MenuItem>Acount</MenuItem></Link>
-                <Link href="/" passHref><MenuItem onClick={() => logout()}>Logout</MenuItem></Link>
-              </MenuList>
-            </Menu>
-          </div>
-
-
-          {/* 
-          <Button variantColor="red" variant="outline" onClick={() => logout()}>
-            Logout
-          </Button> */}
-        </Stack>
+          <h1 style={{paddingTop: 10}}>placeholders</h1>
       ) : (
           <Stack
             isInline display="flex"
             justifyContent="space-between"
-            m={0}>
+            >
             <Box>
               <Link href="/login" passHref>
                 <Button variantColor="teal" variant="outline">

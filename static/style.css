@@ -4,18 +4,29 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 80vh;
+  min-height: 100vh;
   margin-top: 10px;
 }
 
-.form-container{
-  margin-top: 5px;
+.index-page{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 
 .nav-container{
-  margin-top: 20px;
   margin-bottom: 5px;
+  background-color: aqua;
+  min-height: 10vh;
+  text-align: center;
+}
+
+.map-container{
+  background-color: black;
+  display: flex;
+  justify-content: center;
+
 }
 
 .menu-container{

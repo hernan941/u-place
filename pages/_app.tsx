@@ -1,6 +1,8 @@
 import App from "next/app";
 import Router from "next/router";
 import NProgress from "nprogress";
+import 'react-html5-camera-photo/build/css/index.css';
+
 
 import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
 
