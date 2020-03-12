@@ -1,50 +1,87 @@
-import useAxios from "axios-hooks";
+import EXIF from "exif-js";
 import { NextPage } from "next";
-import { FC, useContext } from "react";
+import { useEffect, useState } from "react";
 
-import { Box, List, ListItem, Stack, Text } from "@chakra-ui/core";
+import { Button, useDisclosure } from "@chakra-ui/core";
 
-import { AuthContext } from "../src/client/components/Auth/Context";
-//
 import MyMap from "../src/client/components/Map";
-import MyButton from "../src/client/components/MyButton";
-import { User } from "../src/interfaces";
-
-const UsersList: FC = () => {
-  const [{ data, loading, error }] = useAxios<User[]>("/api/users");
-
-  if (loading) {
-    return <p>Loading Users...</p>;
-  }
-  if (error) {
-    console.error(error);
-    return <p>Error! {error.message}</p>;
-  }
-
-  return (
-    <Box p={3}>
-      <Stack spacing={10}>
-        {data.map(({ email, password }, key) => (
-          <Box p={5} key={key} shadow="md" borderWidth="1px">
-            <List styleType="disc">
-              <ListItem>Email: {email}</ListItem>
-              <ListItem>Password: {password}</ListItem>
-            </List>
-          </Box>
-        ))}
-      </Stack>
-    </Box>
-  );
-};
+import AddModal from "../src/client/components/Modals/AddModal";
 
 const Index: NextPage = () => {
-   
-    return <div className="map-container">
-      <MyMap />
-      <MyButton/>
+  let hiddenInput = null;
+  //* temporal data *//
+  const [file, setFile] = useState(null);
+  const [pos, setPos] = useState(null);
+
+  //* modal 1 *//
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [size, setSize] = useState("xs");
+  const [markers, setMarkers] = useState([]);
+
+  const saveImage = e => {
+    setMarkers([...markers, e]);
+  };
+
+  const handlePhoto = file => {
+    setFile(file);
+    EXIF.getData(file, function() {
+      // console.log(EXIF.getAllTags(this));
+      // console.log(file);
+    });
+  };
+
+  useEffect(() => {
+    if (file) {
+      onOpen();
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(pos => setPos(pos));
+      } else {
+        /* la geolocalización NO está disponible */
+        console.log("no");
+      }
+    }
+  }, [file]);
+
+  return (
+    <div className="index-page">
+      <MyMap markers={markers} />
+      <input
+        hidden
+        type="file"
+        name="image"
+        accept="image/*"
+        ref={el => (hiddenInput = el)}
+        onChange={e => handlePhoto(e.target.files[0])}
+      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-end"
+        }}
+      >
+        <Button
+          variantColor="gray"
+          size="lg"
+          m={2}
+          textAlign="right"
+          onClick={() => {
+            hiddenInput.click();
+          }}
+        >
+          Add Photo
+        </Button>
+      </div>
+      <AddModal
+        onClose={onClose}
+        size={size}
+        isOpen={isOpen}
+        image={file !== null ? URL.createObjectURL(file) : null}
+        position={pos}
+        saveImage={saveImage}
+      />
     </div>
-
+  );
 };
-
 
 export default Index;
