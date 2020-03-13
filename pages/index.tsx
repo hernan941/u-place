@@ -1,3 +1,4 @@
+import useAxios from "axios-hooks";
 import EXIF from "exif-js";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
@@ -22,12 +23,25 @@ const Index: NextPage = () => {
     setMarkers([...markers, e]);
   };
 
-  const handlePhoto = file => {
+  const toBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.toString());
+      reader.onerror = error => reject(error);
+    });
+
+  const handlePhoto = async file => {
     setFile(file);
     EXIF.getData(file, function() {
       // console.log(EXIF.getAllTags(this));
       // console.log(file);
     });
+
+    const imageBase64 = await toBase64(file);
+
+    console.log({ imageBase64 });
+    
   };
 
   useEffect(() => {
@@ -41,6 +55,13 @@ const Index: NextPage = () => {
       }
     }
   }, [file]);
+
+  const [
+    { data: dataAllMarkers, loading: loadingAllMarkers },
+    refetchAllMarkers
+  ] = useAxios({
+    url: "/api/getAllMarkers"
+  });
 
   return (
     <div className="index-page">
@@ -80,6 +101,7 @@ const Index: NextPage = () => {
         position={pos}
         saveImage={saveImage}
       />
+      {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)}
     </div>
   );
 };

@@ -3773,6 +3773,13 @@ ignore-loader@0.1.2:
   resolved "https://registry.yarnpkg.com/ignore-loader/-/ignore-loader-0.1.2.tgz#d81f240376d0ba4f0d778972c3ad25874117a463"
   integrity sha1-2B8kA3bQuk8Nd4lyw60lh0EXpGM=
 
+ignore-warnings@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/ignore-warnings/-/ignore-warnings-0.2.1.tgz#a260f7dabaf9d996b80f39f74ca47c2905a8f893"
+  integrity sha512-cAtUiwDrvUfhx3AiO1Dvh6+1Dzs51WuP2Gd0oBzan6766qqI0wCbbo3RQyoeCh6N/PkQtZdGEVkUXqk/rQjqYw==
+  dependencies:
+    newregexp "^1.0.1"
+
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-cwd/-/import-cwd-2.1.0.tgz#aa6cf36e722761285cb371ec6519f53e2435b0a9"
@@ -4738,6 +4745,11 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
+
+newregexp@^1.0.1:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/newregexp/-/newregexp-1.3.0.tgz#6ea2a700c8f926214adb955d8399e204e325c128"
+  integrity sha512-7PjUzh64TSfZ07x+xoeCaJcs/RyUZewyCt+1pQoAXpR1NbdCJMlY+Ph0juPBROBIWHxmYmKPpAQF02uqPbZY6Q==
 
 next-images@^1.3.1:
   version "1.3.1"
