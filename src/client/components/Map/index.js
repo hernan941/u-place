@@ -1,34 +1,67 @@
-import React, { useState } from 'react'
-import Map from 'pigeon-maps';
-import Marker from './Marker';
+import React, { useState } from "react";
+import Map from "pigeon-maps";
+import Marker from "./Marker";
 
-import { useDisclosure } from "@chakra-ui/core";
-import { useWindowDimensions } from '../WindowDimensions/context/index';
-import ShowModal from '../Modals/ShowModal';
+import ShowModal from "../Modals/ShowModal";
 
-export default function MyMap({markers}) {
-    console.log(markers);
-    const { width, height } = useWindowDimensions();
-    const [details, setDetails] = useState("");
+const MAPTILER_ACCESS_TOKEN = 'oX566lZc76j7AJxQAjJt';
+const MAP_ID = 'streets';
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const handleClickMarker = (element) => {
-        setDetails(element);
-        onOpen();
-    }
 
-    return (
-        <div className="map-container">
-            <Map center={[-39.819588, -73.245209]} zoom={14} width={width - 20} height={height - 150}>
-                {markers.map(e =>
-                    <Marker key="here" anchor={e.pos} payload={1} onClick={({ event, anchor, payload, }) => {handleClickMarker(e)}} />
-                )}
-            </Map>
-            <ShowModal 
-            onClose={onClose}
-            size={"xs"}
-            isOpen={isOpen}
-            details={details} />
-        </div>
-    )
+
+export default function MyMap({ markers  }) {
+  console.log("markers", markers);
+  const [details, setDetails] = useState("");
+  const [showMarker, setShowMarker] = useState(false);
+  
+
+  const mapTilerProvider =  (x, y, z, dpr) => {
+    return `https://api.maptiler.com/maps/${MAP_ID}/256/${z}/${x}/${y}${dpr >= 2 ? '@2x' : ''}.png?key=${MAPTILER_ACCESS_TOKEN}`
+  }
+  
+  const handleClickMarker = element => {
+    setDetails(element);
+  };
+  const handleClickMap = latLng => {
+    console.log("click on map: ", latLng);
+  };
+
+  const onOpenShowModal = () => {
+    setShowMarker(true);
+  };
+
+  const onCloseShowModal = () => {
+    setShowMarker(false);
+  };
+
+  return (
+    <div className="map-container">
+      <Map
+        provider ={mapTilerProvider}
+        dprs = {[1,2]}
+        center={[-39.819588, -73.245209]}
+        zoom={14}
+        onClick={({ event, latLng, pixel }) => {
+          handleClickMap(latLng);
+        }}
+      >
+        {markers.map(e => (
+          <Marker
+            key={e.key}
+            anchor={e.pos}
+            payload={1}
+            onClick={({ event, anchor, payload }) => {
+              handleClickMarker(e);
+            }}
+          />
+        ))}
+      </Map>
+      <ShowModal
+        onClose={onCloseShowModal}
+        size={"xs"}
+        isOpen={showMarker}
+        details={details}
+      />
+    </div>
+  );
 }

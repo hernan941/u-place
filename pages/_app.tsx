@@ -7,8 +7,6 @@ import NProgress from "nprogress";
 import { CSSReset, theme, ThemeProvider } from "@chakra-ui/core";
 
 import { Auth } from "../src/client/components/Auth/Context";
-import Navigation from "../src/client/components/Navigation";
-import WindowDimensionsProvider from "../src/client/components/WindowDimensions/context";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -25,12 +23,9 @@ export default class MyApp extends App {
         }}
       >
         <CSSReset />
-        <WindowDimensionsProvider>
-          <Auth>
-            <Navigation />
-            <Component {...pageProps} />
-          </Auth>
-        </WindowDimensionsProvider>
+        <Auth>
+          <Component {...pageProps} />
+        </Auth>
       </ThemeProvider>
     );
   }

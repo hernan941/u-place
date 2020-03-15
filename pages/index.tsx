@@ -1,23 +1,35 @@
 import useAxios from "axios-hooks";
+import axios from "axios";
 import EXIF from "exif-js";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import { useGeolocation } from "react-use";
 
-import { Button, useDisclosure } from "@chakra-ui/core";
+import { Button } from "@chakra-ui/core";
 
 import MyMap from "../src/client/components/Map";
-import AddModal from "../src/client/components/Modals/AddModal";
+import { TheModal, HelloModal } from "../src/client/components/Modals";
 
 const Index: NextPage = () => {
   let hiddenInput = null;
-  //* temporal data *//
   const [file, setFile] = useState(null);
-  const [pos, setPos] = useState(null);
-
-  //* modal 1 *//
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [size, setSize] = useState("xs");
+  const [latLng, setLatLng] = useState(null);
+  const [base64, setBase64] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [hello, setHello] = useState(true);
+
+  const requestGeo = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(({ coords }) =>
+        setLatLng([coords.latitude, coords.longitude])
+      );
+    }
+  };
+
+  const openCamera = hiddenInput => {
+    hiddenInput.click();
+  };
 
   const saveImage = e => {
     setMarkers([...markers, e]);
@@ -33,29 +45,54 @@ const Index: NextPage = () => {
 
   const handlePhoto = async file => {
     setFile(file);
-    EXIF.getData(file, function() {
-      // console.log(EXIF.getAllTags(this));
-      // console.log(file);
-    });
+    if (file) {
+      setModal(true);
+    }
 
     const imageBase64 = await toBase64(file);
+    setBase64(imageBase64);
+  };
 
-    console.log({ imageBase64 });
-    
+  const setSubmit = async (author, desc) => {
+    saveImage({
+      error: "not",
+      pos: latLng,
+      img: file,
+      description: desc
+    });
+
+    await axios
+      .post("/api/createMarker", {
+        author: author,
+        image: base64,
+        desc: desc,
+        position: latLng,
+        imageFilename: file.name
+      })
+      .then(r => console.log(r))
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    if (markers.length === 0) {
+      console.log("error");
+    }
+  }, [markers]);
+
+  const setData = () => {
+    const tempData = [];
+    if (!loadingAllMarkers)
+      dataAllMarkers.map(
+        e => tempData.push({ key: e._id, pos: e.position, author: e.author }),
+        setMarkers(tempData)
+      );
   };
 
   useEffect(() => {
     if (file) {
-      onOpen();
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(pos => setPos(pos));
-      } else {
-        /* la geolocalización NO está disponible */
-        console.log("no");
-      }
+      requestGeo();
     }
   }, [file]);
-
   const [
     { data: dataAllMarkers, loading: loadingAllMarkers },
     refetchAllMarkers
@@ -74,32 +111,30 @@ const Index: NextPage = () => {
         ref={el => (hiddenInput = el)}
         onChange={e => handlePhoto(e.target.files[0])}
       />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "flex-end"
+      <Button
+        style={{ position: "fixed", bottom: 20, right: 20 }}
+        variantColor="gray"
+        size="lg"
+        onClick={() => {
+          openCamera(hiddenInput);
         }}
       >
-        <Button
-          variantColor="gray"
-          size="lg"
-          m={2}
-          textAlign="right"
-          onClick={() => {
-            hiddenInput.click();
-          }}
-        >
-          Add Photo
-        </Button>
-      </div>
-      <AddModal
-        onClose={onClose}
-        size={size}
-        isOpen={isOpen}
-        image={file !== null ? URL.createObjectURL(file) : null}
-        position={pos}
-        saveImage={saveImage}
+        Add Photo
+      </Button>
+
+      <TheModal
+        isOpen={modal}
+        onClose={() => setModal(false)}
+        setSubmit={setSubmit}
+        position={latLng}
+        requestGeo={() => requestGeo()}
+      />
+      <HelloModal
+        isOpen={hello}
+        onClose={() => {
+          setHello(false);
+          setData();
+        }}
       />
       {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)}
     </div>

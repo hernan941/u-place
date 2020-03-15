@@ -4,32 +4,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 100vh;
   margin-top: 10px;
 }
 
-.index-page{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.index-page {
 }
 
-
-.nav-container{
+.nav-container {
   margin-bottom: 5px;
   background-color: aqua;
   min-height: 10vh;
   text-align: center;
 }
 
-.map-container{
-  background-color: black;
-  display: flex;
-  justify-content: center;
-
+.map-container {
+  width: 100vw;
+  height: 100vh;
+  padding: 10px;
 }
 
-.menu-container{
+.menu-container {
   display: flex;
   align-items: center;
 }

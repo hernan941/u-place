@@ -34,6 +34,7 @@
     "pigeon-overlay": "^0.2.3",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-hook-form": "^5.1.1",
     "react-html5-camera-photo": "^1.5.4",
     "react-use": "^13.27.0",
     "url-loader": "^3.0.0",
