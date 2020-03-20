@@ -3,9 +3,8 @@ import axios from "axios";
 import EXIF from "exif-js";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { useGeolocation } from "react-use";
 
-import { Button } from "@chakra-ui/core";
+import { Button, Spinner } from "@chakra-ui/core";
 
 import MyMap from "../src/client/components/Map";
 import { TheModal, HelloModal } from "../src/client/components/Modals";
@@ -18,6 +17,15 @@ const Index: NextPage = () => {
   const [markers, setMarkers] = useState([]);
   const [modal, setModal] = useState(false);
   const [hello, setHello] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const fetchMarkers = async () => {
+    setLoading(true);
+    const response = await axios.get("/api/getAllMarkers");
+    const data = await response.data;
+    setData(data);
+    setLoading(false);
+  };
 
   const requestGeo = () => {
     if (navigator.geolocation) {
@@ -58,7 +66,8 @@ const Index: NextPage = () => {
       error: "not",
       pos: latLng,
       img: file,
-      description: desc
+      description: desc,
+      key: `tempKey${author}`
     });
 
     await axios
@@ -74,18 +83,15 @@ const Index: NextPage = () => {
   };
 
   useEffect(() => {
-    if (markers.length === 0) {
-      console.log("error");
-    }
-  }, [markers]);
+    fetchMarkers();
+  }, []);
 
-  const setData = () => {
+  const setData = data => {
     const tempData = [];
-    if (!loadingAllMarkers)
-      dataAllMarkers.map(
-        e => tempData.push({ key: e._id, pos: e.position, author: e.author }),
-        setMarkers(tempData)
-      );
+    data.map(
+      e => tempData.push({ key: e._id, pos: e.position, author: e.author }),
+      setMarkers(tempData)
+    );
   };
 
   useEffect(() => {
@@ -93,6 +99,7 @@ const Index: NextPage = () => {
       requestGeo();
     }
   }, [file]);
+
   const [
     { data: dataAllMarkers, loading: loadingAllMarkers },
     refetchAllMarkers
@@ -102,6 +109,8 @@ const Index: NextPage = () => {
 
   return (
     <div className="index-page">
+      {loading ? <Spinner className="spinner" /> : null}
+
       <MyMap markers={markers} />
       <input
         hidden
@@ -121,7 +130,6 @@ const Index: NextPage = () => {
       >
         Add Photo
       </Button>
-
       <TheModal
         isOpen={modal}
         onClose={() => setModal(false)}
@@ -133,10 +141,9 @@ const Index: NextPage = () => {
         isOpen={hello}
         onClose={() => {
           setHello(false);
-          setData();
         }}
       />
-      {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)}
+      {/* {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)} */}
     </div>
   );
 };

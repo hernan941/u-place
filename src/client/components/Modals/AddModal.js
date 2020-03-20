@@ -69,3 +69,12 @@ const AddModal = ({ onClose, size, isOpen, image, position, saveImage }) => {
 };
 
 export default AddModal;
+
+<AddModal
+  onClose={onClose}
+  size={"xs"}
+  isOpen={isOpen}
+  image={file !== null ? URL.createObjectURL(file) : null}
+  position={pos}
+  saveImage={saveImage}
+/>;

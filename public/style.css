@@ -7,9 +7,21 @@ body {
   margin-top: 10px;
 }
 
-.index-page {
+.spinner {
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  z-index: 2;
 }
 
+.comunidad {
+  color: #3d9970;
+  font-weight: bold;
+}
+
+.brand {
+  font-weight: bold;
+}
 .nav-container {
   margin-bottom: 5px;
   background-color: aqua;
