@@ -31,15 +31,31 @@ const Index: NextPage = () => {
     img: ""
   });
 
-  const [state, setState] = useState(null);
+  const [
+    { data: dataAllMarkers, loading: loadingAllMarkers },
+    refetchAllMarkers
+  ] = useAxios({
+    url: "/api/getAllMarkers"
+  });
+
   const handleClickMarker = key => {
     setLoading(true);
-    const obj = markers.find(e => e.key === key);
 
+    const obj = markers.find(e => e.key === key);
+    console.log(obj);
+    if (key.includes("temp")) {
+      setDetails({
+        author: obj.author,
+        desc: obj.desc ? obj.desc : "",
+        img: URL.createObjectURL(file)
+      });
+      setModalDetails(true);
+      setLoading(false);
+      return;
+    }
     axios
       .get(`api/image/${obj.img}`)
       .then(res => {
-        setState(res.config.url);
         setDetails({
           author: obj.author,
           desc: obj.desc ? obj.desc : "",
@@ -113,10 +129,11 @@ const Index: NextPage = () => {
 
   const setSubmit = async (author, desc) => {
     saveImage({
+      author: author,
       error: "not",
       pos: latLng,
       img: file,
-      description: desc,
+      desc: desc,
       key: `tempKey${author}`
     });
 
@@ -133,8 +150,10 @@ const Index: NextPage = () => {
   };
 
   useEffect(() => {
-    fetchMarkers();
-  }, []);
+    if (dataAllMarkers) {
+      setData(dataAllMarkers);
+    }
+  }, [dataAllMarkers]);
 
   useEffect(() => {
     if (file) {
@@ -142,16 +161,9 @@ const Index: NextPage = () => {
     }
   }, [file]);
 
-  const [
-    { data: dataAllMarkers, loading: loadingAllMarkers },
-    refetchAllMarkers
-  ] = useAxios({
-    url: "/api/getAllMarkers"
-  });
-
   return (
     <div className="index-page">
-      {loading ? <Spinner className="spinner" /> : null}
+      {loadingAllMarkers ? <Spinner className="spinner" /> : null}
 
       <MyMap markers={markers} handleClickMarker={handleClickMarker} />
       <input
@@ -189,13 +201,12 @@ const Index: NextPage = () => {
         isOpen={modalDetails}
         onClose={() => {
           setModalDetails(false);
-          setState(false);
         }}
         author={details.author}
         desc={details.desc}
         img={details.img}
       />
-      {/* {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)} */}
+      {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)}
     </div>
   );
 };
