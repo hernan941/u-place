@@ -105,6 +105,7 @@ const Index: NextPage = () => {
     if (file) {
       setModal(true);
     }
+    console.log("file", file);
 
     const imageBase64 = await toBase64(file);
     setBase64(imageBase64);
