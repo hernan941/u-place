@@ -7,7 +7,7 @@ import {
     ModalBody,
     ModalCloseButton,
     Button,
-    Text
+    Spinner
   } from "@chakra-ui/core";
 
 
@@ -60,10 +60,10 @@ const HelloModal = ({isOpen, onClose}) => {
     return <Modal isOpen={isOpen} onClose={onClose} size = {"xs"}>
     <ModalOverlay />
     <ModalContent>
-      <ModalHeader ><Emoji symbol={`\u{1F30D}`} />&nbsp; Bienvenido! <br />a PlaceHolders</ModalHeader>
+      <ModalHeader ><Emoji symbol={`\u{1F30D}`} />&nbsp; Bienvenido! a Uplace</ModalHeader>
       <ModalCloseButton />
       <ModalBody textAlign="justify">
-          <span className="brand">PH</span> se encarga de recopilar y visibilizar arte urbano a traves de la <span className="comunidad">comunidad</span>. Unete y suma el arte que encuentres en tu camino.
+          <span className="brand">Uplace</span> se encarga de recopilar y visibilizar arte urbano a traves de la <span className="comunidad">comunidad</span>. Unete y suma el arte que encuentres en tu camino.
           &emsp;
           <Emoji symbol={'\u{1F64C}'}/>
           &emsp;
@@ -83,6 +83,37 @@ const HelloModal = ({isOpen, onClose}) => {
   </Modal>
 }
 
+const DetailsModal = ({isOpen, onClose, author, desc, img}) =>{
+  return <Modal isOpen={isOpen} onClose={onClose} size = {"xs"}>
+    <ModalOverlay />
+    <ModalContent>
+    
+    <ModalHeader ><Emoji symbol={`\u{1F47B}`} />&nbsp; Subido por <span style={{color: "#e295fc"}}>{author}</span></ModalHeader>
+      <ModalCloseButton />
+      
+      <ModalBody textAlign="justify">
+          {desc} <br />
+          <img src ={img} width="500" height="500" />
+          &emsp;
+          <Emoji symbol={'\u{1F64C}'}/>
+          &emsp;
+          <Emoji symbol={'\u{1F64C}'}/>
+          &emsp;
+          <Emoji symbol={'\u{1F64C}'}/>
+      </ModalBody>
+      <ModalFooter textAlign="center">
+        <Button left variantColor="green" mr={3} onClick={()=>{
+            onClose();
+        }}>
+          Oke
+        </Button>
+        
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+
+}
+
 const Emoji = props => (
   <span
       className="emoji"
@@ -93,4 +124,4 @@ const Emoji = props => (
       {props.symbol}
   </span>);
 
-export {TheModal, HelloModal}
+export {TheModal, HelloModal, DetailsModal}

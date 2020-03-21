@@ -7,7 +7,11 @@ import { useEffect, useState } from "react";
 import { Button, Spinner } from "@chakra-ui/core";
 
 import MyMap from "../src/client/components/Map";
-import { TheModal, HelloModal } from "../src/client/components/Modals";
+import {
+  TheModal,
+  HelloModal,
+  DetailsModal
+} from "../src/client/components/Modals";
 
 const Index: NextPage = () => {
   let hiddenInput = null;
@@ -15,16 +19,60 @@ const Index: NextPage = () => {
   const [latLng, setLatLng] = useState(null);
   const [base64, setBase64] = useState(null);
   const [markers, setMarkers] = useState([]);
+  /*modal gates*/
   const [modal, setModal] = useState(false);
   const [hello, setHello] = useState(true);
+  const [modalDetails, setModalDetails] = useState(false);
+  /*          */
   const [loading, setLoading] = useState(false);
+  const [details, setDetails] = useState({
+    author: "",
+    desc: "",
+    img: ""
+  });
+
+  const [state, setState] = useState(null);
+  const handleClickMarker = key => {
+    setLoading(true);
+    const obj = markers.find(e => e.key === key);
+
+    axios
+      .get(`api/image/${obj.img}`)
+      .then(res => {
+        setState(res.config.url);
+        setDetails({
+          author: obj.author,
+          desc: obj.desc ? obj.desc : "",
+          img: res.config.url
+        });
+        setModalDetails(true);
+        setLoading(false);
+      })
+      .catch(e => console.log(e));
+  };
 
   const fetchMarkers = async () => {
     setLoading(true);
     const response = await axios.get("/api/getAllMarkers");
-    const data = await response.data;
+    const data = response.data;
     setData(data);
+    console.log(data);
     setLoading(false);
+  };
+
+  const setData = data => {
+    const tempData = [];
+    data.map(
+      e =>
+        tempData.push({
+          key: e._id,
+          pos: e.position,
+          author: e.author,
+          desc: e.desc,
+          img: e.imageFilename
+        }),
+      setMarkers(tempData)
+    );
   };
 
   const requestGeo = () => {
@@ -86,14 +134,6 @@ const Index: NextPage = () => {
     fetchMarkers();
   }, []);
 
-  const setData = data => {
-    const tempData = [];
-    data.map(
-      e => tempData.push({ key: e._id, pos: e.position, author: e.author }),
-      setMarkers(tempData)
-    );
-  };
-
   useEffect(() => {
     if (file) {
       requestGeo();
@@ -111,7 +151,7 @@ const Index: NextPage = () => {
     <div className="index-page">
       {loading ? <Spinner className="spinner" /> : null}
 
-      <MyMap markers={markers} />
+      <MyMap markers={markers} handleClickMarker={handleClickMarker} />
       <input
         hidden
         type="file"
@@ -142,6 +182,16 @@ const Index: NextPage = () => {
         onClose={() => {
           setHello(false);
         }}
+      />
+      <DetailsModal
+        isOpen={modalDetails}
+        onClose={() => {
+          setModalDetails(false);
+          setState(false);
+        }}
+        author={details.author}
+        desc={details.desc}
+        img={details.img}
       />
       {/* {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)} */}
     </div>

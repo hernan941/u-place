@@ -9,7 +9,7 @@ const MAP_ID = 'streets';
 
 
 
-export default function MyMap({ markers  }) {
+export default function MyMap({ markers, handleClickMarker  }) {
   console.log("markers", markers);
   const [details, setDetails] = useState("");
   const [showMarker, setShowMarker] = useState(false);
@@ -19,9 +19,7 @@ export default function MyMap({ markers  }) {
     return `https://api.maptiler.com/maps/${MAP_ID}/256/${z}/${x}/${y}${dpr >= 2 ? '@2x' : ''}.png?key=${MAPTILER_ACCESS_TOKEN}`
   }
   
-  const handleClickMarker = element => {
-    setDetails(element);
-  };
+  
   const handleClickMap = latLng => {
     console.log("click on map: ", latLng);
   };
@@ -51,7 +49,7 @@ export default function MyMap({ markers  }) {
             anchor={e.pos}
             payload={1}
             onClick={({ event, anchor, payload }) => {
-              handleClickMarker(e);
+              handleClickMarker(e.key);
             }}
           />
         ))}
