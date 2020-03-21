@@ -45,6 +45,7 @@ const Index: NextPage = () => {
           desc: obj.desc ? obj.desc : "",
           img: res.config.url
         });
+
         setModalDetails(true);
         setLoading(false);
       })

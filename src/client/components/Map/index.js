@@ -10,7 +10,6 @@ const MAP_ID = 'streets';
 
 
 export default function MyMap({ markers, handleClickMarker  }) {
-  console.log("markers", markers);
   const [details, setDetails] = useState("");
   const [showMarker, setShowMarker] = useState(false);
   
