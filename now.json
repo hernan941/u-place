@@ -1,0 +1,6 @@
+{
+  "env": {
+    "MONGODB_URL": "@mongodb_url",
+    "COOKIE_KEY": "@cookie_key"
+  }
+}
