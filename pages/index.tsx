@@ -68,15 +68,6 @@ const Index: NextPage = () => {
       .catch(e => console.log(e));
   };
 
-  const fetchMarkers = async () => {
-    setLoading(true);
-    const response = await axios.get("/api/getAllMarkers");
-    const data = response.data;
-    setData(data);
-    console.log(data);
-    setLoading(false);
-  };
-
   const setData = data => {
     const tempData = [];
     data.map(
@@ -163,7 +154,7 @@ const Index: NextPage = () => {
 
   return (
     <div className="index-page">
-      {loadingAllMarkers ? <Spinner className="spinner" /> : null}
+      {loadingAllMarkers || loading ? <Spinner className="spinner" /> : null}
 
       <MyMap markers={markers} handleClickMarker={handleClickMarker} />
       <input
@@ -206,7 +197,6 @@ const Index: NextPage = () => {
         desc={details.desc}
         img={details.img}
       />
-      {!loadingAllMarkers && JSON.stringify(dataAllMarkers, null, 2)}
     </div>
   );
 };
