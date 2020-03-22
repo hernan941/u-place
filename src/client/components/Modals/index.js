@@ -133,8 +133,8 @@ const DetailsModal = ({ isOpen, onClose, author, desc, img }) => {
           {desc} <br />
           <Img
             src={img}
-            style={{ objectFit: "contain", width: "100%", maxWidth: "100%" }}
-            loader={<img src="/ph.jpg" alt="placeholder" />}
+            loader={<img src="/ph.jpg" alt="placeholder"/>}
+            
           />
           <br />
           <div>

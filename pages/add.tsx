@@ -22,6 +22,7 @@ const Index: NextPage = () => {
   const [file, setFile] = useState(null);
   const [user, setUser] = useState("");
   const [filename, setFilename] = useState("");
+  const [desc, setDesc] = useState("");
 
   const handleClick = latLng => {
     setPos(latLng);
@@ -36,13 +37,15 @@ const Index: NextPage = () => {
       reader.onerror = error => reject(error);
     });
 
-  const sendSubmit = () => {
-    if (user !== "" && file && filename !== "") {
-      axios
+  const sendSubmit = async () => {
+    console.log(filename);
+
+    if (user !== "" && file && filename !== "" && desc !== "") {
+      await axios
         .post("/api/createMarker", {
           author: user,
           image: file,
-          desc: "descripcion generica",
+          desc: desc,
           position: pos,
           imageFilename: filename
         })
@@ -51,6 +54,7 @@ const Index: NextPage = () => {
           setUser("");
           setFile(null);
           setFilename("");
+          setDesc("");
         })
         .catch(err => console.log(err));
     } else {
@@ -95,6 +99,14 @@ const Index: NextPage = () => {
                 id="user"
                 placeholder="enter user"
                 onChange={e => setUser(e.target.value)}
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="desc">Your user</FormLabel>
+              <Input
+                id="desc"
+                placeholder="enter desc"
+                onChange={e => setDesc(e.target.value)}
               />
             </FormControl>
           </ModalBody>

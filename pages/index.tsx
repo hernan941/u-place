@@ -131,10 +131,10 @@ const Index: NextPage = () => {
     await axios
       .post("/api/createMarker", {
         author: author,
-        image: base64,
         desc: desc,
-        position: latLng,
-        imageFilename: file.name
+        image: base64,
+        imageFilename: file.name,
+        position: latLng
       })
       .then(r => console.log(r))
       .catch(err => console.log(err));
