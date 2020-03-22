@@ -19,7 +19,7 @@ import {
 const Index: NextPage = () => {
   const [modal, setModal] = useState(false);
   const [pos, setPos] = useState(null);
-  const [img, setImg] = useState(null);
+  const [file, setFile] = useState(null);
   const [user, setUser] = useState("");
   const [filename, setFilename] = useState("");
 
@@ -37,11 +37,11 @@ const Index: NextPage = () => {
     });
 
   const sendSubmit = () => {
-    if (user !== "" && img != null && filename !== "") {
+    if (user !== "" && file && filename !== "") {
       axios
         .post("/api/createMarker", {
           author: user,
-          image: img,
+          image: file,
           desc: "descripcion generica",
           position: pos,
           imageFilename: filename
@@ -49,7 +49,7 @@ const Index: NextPage = () => {
         .then(r => {
           console.log(r);
           setUser("");
-          setImg(null);
+          setFile(null);
           setFilename("");
         })
         .catch(err => console.log(err));
@@ -59,10 +59,10 @@ const Index: NextPage = () => {
     setModal(false);
   };
 
-  const handlePhoto = async file => {
-    setFilename(file.name);
-    const imageBase64 = await toBase64(file);
-    setImg(imageBase64);
+  const handlePhoto = async e => {
+    setFilename(e.name);
+    const imageBase64 = await toBase64(e);
+    setFile(imageBase64);
   };
 
   return (
