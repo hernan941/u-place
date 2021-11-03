@@ -39,7 +39,7 @@
     "react-image": "^2.4.0",
     "react-use": "^13.27.0",
     "url-loader": "^3.0.0",
-    "validator": "^12.2.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
